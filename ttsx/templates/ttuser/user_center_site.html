@@ -1,0 +1,88 @@
+{% extends 'bash.html' %}
+{% block scrapy %}
+    <script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript">
+        $.get('/user/area/', function (dic) {
+            var pro = $('#pro')
+{#            遍历json，列表的形式，有两个元素，一个为id，一个为title #}
+            $.each(dic.data, function (index, item) {
+                pro.append('<option value='+item[0]+'>'+item[1]+'</option>')
+            })
+            $('#pro').change(function () {
+                $.get('/user/area1_'+$(this).val()+'/', function (dic) {
+                    $('#city').empty().append('<option value="">选择</option>')
+                    $.each(dic.data, function (index, item) {
+                        $('#city').append('<option value='+item[0]+'>'+item[1]+'</option>')
+                    })
+                })
+            })
+            $('#city').change(function () {
+                $.get('/user/area1_'+$(this).val()+'/', function (dic) {
+                    $('#dis').empty().append('<option value="">选择</option>')
+                    $.each(dic.data, function (index, item) {
+                        $('#dis').append('<option value='+item[0]+'>'+item[1]+'</option>')
+                    })
+                })
+            })
+        })
+
+    </script>
+{% endblock %}
+{% block body %}
+
+	<div class="main_con clearfix">
+		<div class="left_menu_con clearfix">
+			<h3>用户中心</h3>
+			<ul>
+				<li><a href="user_center_info.html">· 个人信息</a></li>
+				<li><a href="user_center_order.html">· 全部订单</a></li>
+				<li><a href="user_center_site.html" class="active">· 收货地址</a></li>
+			</ul>
+		</div>
+		<div class="right_content clearfix">
+				<h3 class="common_title2">收货地址</h3>
+				<div class="site_con">
+					<dl>
+						<dt>当前地址：</dt>
+						<dd>{{ user.uaddr }} （{{ user.uname }} 收） {{ user.uname }}</dd>
+					</dl>					
+				</div>
+				<h3 class="common_title2">编辑地址</h3>
+				<div class="site_con">
+					<form method="post" >
+                        {% csrf_token %}
+						<div class="form_group">
+							<label>收件人：</label>
+							<input type="text" name="ushou">
+						</div>
+						<div class="form_group form_group2" >
+
+                            <label>详细地址：</label>
+                                    <select  id="pro" name="sheng"> 请选择省
+                                    <option value="" text="">选择</option>
+                                    </select>
+                                    <select  id="city" name="shi"> 请选择市
+                                        <option value="" text="">选择</option>
+                                    </select>
+                                    <select  id="dis" name="qu"> 请选择区
+                                        <option value="" text="">选择</option>
+                                    </select><br>
+                             <input type="text" name="input">
+{#                            <textarea class="site_area" >#}
+{#                            </textarea>#}
+
+						</div>
+                        <br>
+						<div class="form_group">
+							<label>手机：</label>
+							<input type="text" name="uphone">
+						</div>
+
+						<input type="submit" name="" value="提交" class="info_submit">
+					</form>
+				</div>
+		</div>
+	</div>
+
+
+ {% endblock body %}

@@ -10,3 +10,7 @@ class UserInfo(models.Model):
     ushou = models.CharField(max_length=10,null=True)
     uaddr = models.CharField(max_length=100, null=True )
     uphone = models.CharField(max_length=11, null=True)
+
+class AreaInfo(models.Model):
+    atitle = models.CharField(max_length=40)
+    aPentar = models.ForeignKey('self', null=True, on_delete=models.CASCADE, blank=True)
