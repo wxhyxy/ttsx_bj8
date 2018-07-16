@@ -8,7 +8,7 @@ urlpatterns = [
     url('^login/$', login),
     url('^register_valid/$', register_valid),
     url('^login_handle/', login_handle),
-    url('^login_out/$', login_our),
+    url('^login_out/$', login_out),
     url('^center/$', center),
     url('^order/$', order),
     url('^site/$', site),

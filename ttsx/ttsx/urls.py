@@ -19,5 +19,6 @@ from django.conf.urls import url, include
 
 urlpatterns = [
     url('admin/', admin.site.urls),
-    url('user/', include('ttuser.urls'))
+    url('user/', include('ttuser.urls')),
+    url('', include('ttgood.urls'))
 ]

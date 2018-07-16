@@ -31,7 +31,8 @@ def register_handle(request):
 
 
 def login(request):
-    return render(request, 'ttuser/login.html', {'title': '登陆', 'top':'0'})
+    uname = request.COOKIES.get('uname')
+    return render(request, 'ttuser/login.html', {'title': '登陆', 'top':'0', 'uname':uname})
 
 
 def register_valid(request):
@@ -43,11 +44,11 @@ def register_valid(request):
 
 
 def login_handle(request):
-    dic = request.POST
-    uname = dic.get('username')
-    upwd = dic.get('pwd')
+    post = request.POST
+    uname = post.get('username')
+    upwd = post.get('userpwd')
     # 代表记住名字
-    uname_jz = dic.get('name_jz', '0')
+    uname_jz = post.get('name_jz', '0')
 
     s1 = sha1()
     s1.update(upwd.encode())
@@ -55,14 +56,14 @@ def login_handle(request):
 
     context = {'title': '登陆', 'uname': uname, 'upwd': upwd, 'top':'0'}
 
-    user = UserInfo.objects.filter(uname=uname)  # 返回一个列表
+    user = UserInfo.objects.filter(uname=str(uname))  # 返回一个列表
 
     if len(user) == 0:
         context['name_error'] = '1'
         return render(request, 'ttuser/login.html', context)
     else:
         # 判断密码是否正确
-        if sha_pwd == user[0].upwd:
+        if user[0].upwd == sha_pwd:
             request.session['uid'] = user[0].id
             request.session['uname'] = uname
             # 重定向 ， 哪里传过来的 返回到哪里
@@ -80,7 +81,7 @@ def login_handle(request):
             context['pwd_error'] = '1'
             return render(request, 'ttuser/login.html', context)
 
-def login_our(request):
+def login_out(request):
     request.session.flush()
     return redirect('/user/login/')
 

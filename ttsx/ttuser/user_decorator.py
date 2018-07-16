@@ -8,5 +8,5 @@ def user_login(fun):
         if request.session.has_key('uid'):
             return fun(request, *args, **kwargs)
         else:
-            return redirect('/ttuser/login/')
+            return redirect('/user/login/')
     return fun2
