@@ -36,13 +36,22 @@
 			</ul>
 
 			<div class="pagenation">
-				<a href="#"><上一页</a>
-				<a href="#" class="active">1</a>
-				<a href="#">2</a>
-				<a href="#">3</a>
-				<a href="#">4</a>
-				<a href="#">5</a>
-				<a href="#">下一页></a>
+                {% if list.has_previous %}
+                <a href="/list{{ type.id }}_1">首页</a>
+				<a href="/list{{ type.id }}_{{ list.number|add:-1 }}">上一页</a>
+                {% endif %}
+
+                {% for pindex in plist %}
+                    {% if pindex == list.number %}
+				    <a href="#" class="active">{{ pindex }}</a>
+                    {% else %}
+                    <a href="/list{{ type.id }}_{{ pindex }}">{{ pindex }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if list.has_next %}
+				<a href="/list{{ type.id }}_{{ list.number|add:1 }}">下一页></a>
+                <a href="/list{{ type.id }}_{{ list.paginator.num_pages }}">末页</a>
+                {% endif %}
 			</div>
 		</div>
     {% endblock %}

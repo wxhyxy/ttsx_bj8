@@ -4,5 +4,5 @@ from .views import *
 
 urlpatterns = [
     url('^$', index),
-    url('^list(\d+)$', list_goods)
+    url('^list(\d+)_(\d+)$', list_goods)
 ]
