@@ -2,9 +2,9 @@
 
   {% block body1 %}
 	<div class="breadcrumb">
-		<a href="#">全部分类</a>
+		<a href="/">全部分类</a>
 		<span>></span>
-		<a href="#">{{ type.ttitle }}</a>
+		<a href="/list{{ type.id }}_1/">{{ type.ttitle }}</a>
 	</div>
 
 	<div class="main_wrap clearfix">
@@ -23,8 +23,8 @@
 
 
 				<li>
-					<a href="detail.html"><img src="/static/{{ good.gpic }}"></a>
-					<h4><a href="detail.html">{{ good.gtitle }}</a></h4>
+					<a href="/{{ good.id }}/"><img src="/static/{{ good.gpic }}"></a>
+					<h4><a href="/{{ good.id }}/">{{ good.gtitle }}</a></h4>
 					<div class="operate">
 						<span class="prize">￥{{ good.gprice }}</span>
 						<span class="unit">{{ good.gkucun }}</span>

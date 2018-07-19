@@ -4,6 +4,7 @@ from hashlib import sha1
 from .models import *
 import datetime
 from .user_decorator import *
+from ttgood.models import *
 
 
 # Create your views here.
@@ -89,7 +90,14 @@ def login_out(request):
 def center(request):
     # 根据村的session 获得 user对象
     user = UserInfo.objects.get(pk=request.session.get('uid'))
-    context = {'title':'用户中心','user':user}
+    goods_ids = request.COOKIES.get('goods_ids').split(',')
+    # good = GoodsInfo.objects.filter(id__in=goods_ids)
+    # 最近浏览
+    good_list = []
+    for gid in goods_ids:
+        if gid:
+            good_list.append(GoodsInfo.objects.get(id=gid))
+    context = {'title':'用户中心','user':user, 'good':good_list}
     return render(request, 'ttuser/user_center_info.html', context)
 
 @user_login

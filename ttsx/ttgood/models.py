@@ -1,8 +1,8 @@
 #coding=utf-8
-from django.db import models
 
 # Create your models here.
 from ttuser.models import *
+from tinymce.models import HTMLField
 
 class TypeInfo(models.Model):
     ttitle = models.CharField(max_length=20)
@@ -29,7 +29,7 @@ class GoodsInfo(models.Model):
     # 库存量
     gkucun = models.IntegerField()
     # 描述
-    gcontent = models.TextField()#models.TextField()
+    gcontent = HTMLField()
     # 类型
     gtype = models.ForeignKey(TypeInfo, on_delete=models.CASCADE)
 
