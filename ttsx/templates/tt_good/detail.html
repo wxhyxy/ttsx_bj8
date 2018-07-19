@@ -1,6 +1,36 @@
 {% extends 'tt_good/bash.html' %}
+{% block scrapy %}
+    <script>
+    $(function () {
+        $('.add_cart').click(function () {
+            var gid = $('#gid').val()
+            var count = $('.num_show').val()
+        $.get('/cart/add/', {'gid': gid,'count':count}, function (data) {
+            if(data.ok==1){
+
+              var $add_x = $('#add_cart').offset().top;
+              var $add_y = $('#add_cart').offset().left;
+
+              var $to_x = $('#show_count').offset().top;
+              var $to_y = $('#show_count').offset().left;
+
+               $(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
+
+               $(".add_jump").stop().animate({'left': $to_y+7, 'top': $to_x+7}, "fast", function() {
+                $(".add_jump").fadeOut('fast');
+           })
+            }else{
+                Location.href('/user/login/')
+            }
+        })
+        })
+    });
+
+    </script>
 
 
+
+{% endblock scrapy %}
 
   {% block body1 %}
 	<div class="breadcrumb">
@@ -8,7 +38,7 @@
 		<span>></span>
 		<a href="/list{{ type.gtype.id }}_1/">{{ type.gtype.ttitle }}</a>
 		<span>></span>
-		<a href="#">商品详情</a>
+		<a href="#">商品详情<input type="hidden" id="gid" value="{{ type.id }}"> </a>
 	</div>
 
 	<div class="goods_detail_con clearfix">
@@ -62,4 +92,6 @@
 
 		</div>
 	</div>
+     <div class="add_jump"></div>
+
 {% endblock %}

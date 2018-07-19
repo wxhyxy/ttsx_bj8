@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
+from ttuser.models import *
 from .models import *
 # Create your views here.
 def index(request):
+    user = UserInfo.objects.get(pk = request.session.get('uid'))
     typeinfo = TypeInfo.objects.all()
     list = []
     for type in typeinfo:
@@ -12,10 +14,11 @@ def index(request):
             'list_click':type.goodsinfo_set.order_by('gclick')[0:3]
         })
 
-    context = {'title':'首页', 'list':list, 'cart' : '1'}
+    context = {'title':'首页', 'list':list, 'cart' : '1', 'user':user}
     return render(request, 'tt_good/index.html', context)
 
 def list_goods(request, type_id, pindex):
+    user = UserInfo.objects.get(pk=request.session.get('uid'))
     typeinfo = TypeInfo.objects.get(pk=type_id)
     list = typeinfo.goodsinfo_set.order_by('id')
     list_new = typeinfo.goodsinfo_set.order_by('-id')[0:2]
@@ -35,20 +38,21 @@ def list_goods(request, type_id, pindex):
         else:
             plist = range(int(pindex)-2, int(plist)+3)
 
-    context = {'title':'列表', 'cart':'1', 'type':typeinfo, 'list':page, 'plist':plist, 'new':list_new}
+    context = {'title':'列表', 'cart':'1', 'type':typeinfo, 'list':page, 'plist':plist, 'new':list_new, 'user':user}
     return render(request, 'tt_good/list.html',context)
 
 
 def detail(request, pid):
     try:
         # 根据传入的ID查询商品，搜索基数加1
+        user = UserInfo.objects.get(pk=request.session.get('uid'))
         goods = GoodsInfo.objects.get(pk = pid)
         goods.gclick += 1
         goods.save()
         # 最新商品
         list_new = goods.gtype.goodsinfo_set.order_by('-id')[0:2]
 
-        context = {'title':'详情', 'cart':'1','type':goods, 'new':list_new}
+        context = {'title':'详情', 'cart':'1','type':goods, 'new':list_new, 'user':user}
         response = render(request, 'tt_good/detail.html', context)
         # 查找最近浏览的数据存储结构id1,id2
         goods_ids = request.COOKIES.get('goods_ids', '')
