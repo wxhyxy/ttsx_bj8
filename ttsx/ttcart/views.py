@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from .models import *
+from ttuser.models import *
+from ttuser.user_decorator import *
 
 # Create your views here.
 def add(request):
@@ -23,3 +25,19 @@ def add(request):
         cart.ccoumt+=count
         cart.save()
     return JsonResponse({'ok': 1})
+
+@user_login
+def cart(request):
+    cart = CartInfo.objects.filter(cuser__id=request.session.get('uid'))
+    context = {'title': '购物车', 'cart': cart}
+    return render(request, 'ttcart/cart.html', context)
+
+
+def cart_del(request):
+    try:
+        cid = int(request.GET.get('cid'))
+        cart = CartInfo.objects.get(pk=cid)
+        cart.delete()
+        return JsonResponse({'isok':1})
+    except:
+        return JsonResponse({'isok':0})

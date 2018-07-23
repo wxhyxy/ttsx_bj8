@@ -13,5 +13,6 @@ urlpatterns = [
     url('^order/$', order),
     url('^site/$', site),
     url('^area/$', area),
-    url('^area1_(\d+)/', area1)
+    url('^area1_(\d+)/', area1),
+    url('^islogin/$', islogin),
 ]

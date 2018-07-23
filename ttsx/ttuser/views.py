@@ -86,6 +86,13 @@ def login_out(request):
     request.session.flush()
     return redirect('/user/login/')
 
+def islogin(request):
+    result = 0
+    if request.session.has_key('uid'):
+        result = 1
+    return JsonResponse({'result':result})
+
+
 @user_login
 def center(request):
     # 根据村的session 获得 user对象
